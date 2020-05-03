@@ -11,6 +11,7 @@ public class play extends AppCompatActivity {
     Button b1,b2,b3;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        getSupportActionBar().hide();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
         b1 = findViewById(R.id.button);

@@ -6,6 +6,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
@@ -32,6 +33,11 @@ import static java.lang.Thread.sleep;
 
 public class ExtremeMode extends AppCompatActivity {
     ImageView[] img = new ImageView[18];
+    RelativeLayout r1;
+    ImageView back;
+    ImageView restart;
+    ImageView clock;
+    TextView timetxt;
     String[] arr = {"p1","p1","p2","p2","p3","p3","p4","p4","p5","p5","p6","p6","p7","p7","p8","p8","p9","p9"};
     Integer[] imgids = {R.id.IV0,R.id.IV1,R.id.IV2,R.id.IV3,R.id.IV4,R.id.IV5,R.id.IV6,R.id.IV7,R.id.IV8,R.id.IV9,R.id.IV10,R.id.IV11,R.id.IV12,R.id.IV13,R.id.IV14,R.id.IV15,R.id.IV16,R.id.IV17};
     Integer[] global = {-1,-1};
@@ -42,8 +48,11 @@ public class ExtremeMode extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        getSupportActionBar().hide();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_extreme_mode);
+        r1 =  findViewById(R.id.rel2);
+        r1.setVisibility(View.INVISIBLE);
         running = true;
         if (savedInstanceState != null) {
             seconds
@@ -71,6 +80,23 @@ public class ExtremeMode extends AppCompatActivity {
                 }
             });
         }
+
+        back = findViewById(R.id.backbtn);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(),play.class);
+                startActivity(i);
+            }
+        });
+        restart = findViewById(R.id.restart);
+        restart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(),ExtremeMode.class);
+                startActivity(i);
+            }
+        });
 
     }
     public class LongOperation extends AsyncTask<Void, Void, String> {
@@ -117,9 +143,15 @@ public class ExtremeMode extends AppCompatActivity {
                 if(score == 9){
                     running=false;
                     RelativeLayout r = findViewById(R.id.rel);
-                    r.setAlpha((float) 0.3);
-                    ImageView img = findViewById(R.id.credit);
-                    img.setBackgroundColor(9);
+                    r1.setVisibility(View.VISIBLE);
+                    timetxt = findViewById(R.id.timetxt);
+                    TextView curtime = findViewById(R.id.timer);
+                    timetxt.setText("TIME : "+curtime.getText());
+                    clock = findViewById(R.id.clock);
+                    clock.setVisibility(View.INVISIBLE);
+                    restart = findViewById(R.id.restart);
+
+
                 }
             } else {
                 toggleGen(img[global[0]],img[global[1]]);
@@ -221,7 +253,12 @@ public class ExtremeMode extends AppCompatActivity {
                                 minutes, secs);
 
                 // Set the text view text.
-                timeView.setText(time);
+                if(score==9){
+                    timeView.setText("");
+                }else{
+                    timeView.setText(time);
+                }
+
 
                 // If running is true, increment the
                 // seconds variable.

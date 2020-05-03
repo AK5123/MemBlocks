@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         ImageView image;
         @Override
         protected void onCreate(Bundle savedInstanceState) {
+            getSupportActionBar().hide();
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
             re=findViewById(R.id.relativeLayout);
